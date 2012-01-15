@@ -39,9 +39,9 @@ public enum DbService {
             conn = getConnection();
             QueryRunner run = new QueryRunner();
             if (params != null) {
-                //run.update(sql, params);
+                run.update(sql, params);
             } else {
-                //run.update(sql);
+                run.update(sql);
             }
             conn.close();
         } finally {

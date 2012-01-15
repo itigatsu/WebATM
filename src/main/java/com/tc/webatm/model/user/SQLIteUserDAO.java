@@ -57,6 +57,7 @@ public class SQLIteUserDAO implements UserDAO {
         if (!(model instanceof User)) {
             throw new IllegalArgumentException("User instance must be passed");
         }
+
         User user = (User)model;
         if (user.getId() < 1) {
             throw new IllegalArgumentException("User id must represent positive int");

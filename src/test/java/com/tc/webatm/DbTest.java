@@ -23,8 +23,5 @@ public class DbTest extends TestCase {
         for (Object user : u) {
             System.out.println(user);
         }
-
-        //userDAO.delete(new User().setId(1));
-        //userDAO.deleteAll();
     }
 }

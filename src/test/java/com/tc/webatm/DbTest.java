@@ -1,12 +1,12 @@
 package com.tc.webatm;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Collection;
 
-import com.tc.webatm.model.User;
-import com.tc.webatm.util.DbService;
+import com.tc.webatm.model.BaseDAO;
+import com.tc.webatm.model.DAOFactory;
+import com.tc.webatm.model.user.User;
+import com.tc.webatm.model.user.UserDAO;
 import junit.framework.TestCase;
 
 public class DbTest extends TestCase {
@@ -14,12 +14,17 @@ public class DbTest extends TestCase {
         //DbService.SELF.reloadDbSchema();
         //DbService.SELF.initDbWithMockData();
 
-        List<User> users = DbService.SELF.getAllUsers();
-        assertEquals(users.get(0).getEmail(), "user@test.com");
+        UserDAO userDAO = DAOFactory.getDAOFactory().getUserDAO();
+
+        Collection u = userDAO.getAll();
+        assertEquals(((User)u.toArray()[0]).getEmail(), "user@test.com");
 
         System.out.println("Users:");
-        for (User user : users) {
-            System.out.println(user.getEmail());
+        for (Object user : u) {
+            System.out.println(user);
         }
+
+        //userDAO.delete(new User().setId(1));
+        //userDAO.deleteAll();
     }
 }

@@ -1,6 +1,6 @@
 package com.tc.webatm.util;
 
-import com.tc.webatm.model.User;
+import com.tc.webatm.model.user.User;
 
 abstract public class UsersService {
     private static User loggedUser;

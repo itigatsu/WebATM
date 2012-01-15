@@ -7,61 +7,66 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 public class SQLIteUserDAO implements UserDAO {
     @Override
-    public User getById(int id) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public User getById(int id) throws ClassNotFoundException, SQLException {
+        List users = DbService.SELF.select("select * from user where id = " + id + ";");
+        User user = new User();
+        user.hydrateFromMap((Map)users.get(0));
+        return user;
     }
 
     @Override
-    public void add(BaseModel model) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void add(BaseModel model) throws ClassNotFoundException, SQLException {
+        if (!(model instanceof User)) {
+            throw new IllegalArgumentException("User instance must be passed");
+        }
+        User user = (User)model;
+        DbService.SELF.execQuery("insert into user(email, password) values (?, ?);", user.getEmail(), user.getPassword());
     }
 
     @Override
-    public void update(BaseModel newUser) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void update(BaseModel model) throws ClassNotFoundException, SQLException {
+        if (!(model instanceof User)) {
+            throw new IllegalArgumentException("User instance must be passed");
+        }
+        User user = (User)model;
+        if (user.getId() < 1) {
+            throw new IllegalArgumentException("User id must represent positive int");
+        }
+        DbService.SELF.execQuery("update user set email = ?, password = ? where id = ?;",
+                user.getEmail(), user.getPassword(), user.getId());
     }
 
     @Override
-    public Collection getAll() throws ClassNotFoundException, SQLException {
-        Connection conn = null;
-        ArrayList<User> ret = null;
-
-        try {
-            conn = DbService.SELF.getConnection();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("select * from user;");
-
-            ret = new ArrayList<User>();
-            while (rs.next()) {
-                User u = new User();
-                u.setEmail(rs.getString("email"));
-                u.setPassword(rs.getString("password"));
-                ret.add(u);
-            }
-            rs.close();
-            conn.close();
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (Exception ignored) {}
-            }
+    public List<User> getAll() throws ClassNotFoundException, SQLException {
+        List users = DbService.SELF.select("select * from user;");
+        List<User> ret = new ArrayList<User>();
+        for (Object obj : users) {
+            User u = new User();
+            u.hydrateFromMap((Map)obj);
+            ret.add(u);
         }
         return ret;
     }
 
     @Override
-    public void delete(BaseModel user) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void delete(BaseModel model) throws ClassNotFoundException, SQLException {
+        if (!(model instanceof User)) {
+            throw new IllegalArgumentException("User instance must be passed");
+        }
+        User user = (User)model;
+        if (user.getId() < 1) {
+            throw new IllegalArgumentException("User id must represent positive int");
+        }
+
+        DbService.SELF.execQuery("delete from user where id = ?;", user.getId());
     }
 
     @Override
-    public void deleteAll() {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void deleteAll() throws ClassNotFoundException, SQLException {
+        DbService.SELF.execQuery("delete from user;", null);
     }
 }

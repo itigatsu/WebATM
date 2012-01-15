@@ -1,7 +1,7 @@
 package com.tc.webatm.controller;
 
-import com.tc.webatm.filters.BasicAuthFilter;
-import com.tc.webatm.model.User;
+import com.tc.webatm.model.DAOFactory;
+import com.tc.webatm.util.DbService;
 import com.tc.webatm.util.UsersService;
 
 import javax.servlet.ServletException;
@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 

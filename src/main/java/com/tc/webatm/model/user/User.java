@@ -3,9 +3,10 @@ package com.tc.webatm.model.user;
 import com.tc.webatm.model.BaseModel;
 import com.tc.webatm.util.UsersService;
 
-import java.util.Collection;
+import java.util.Map;
 
 public class User extends BaseModel {
+    private int id;
     private String email;
     private String password;
 
@@ -14,9 +15,21 @@ public class User extends BaseModel {
         return email;
     }
 
-    public void setEmail(String email)
+    public User setEmail(String email)
     {
         this.email = email;
+        return this;
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public User setId(int id)
+    {
+        this.id = id;
+        return this;
     }
 
     public String getPassword()
@@ -24,9 +37,10 @@ public class User extends BaseModel {
         return password;
     }
 
-    public void setPassword(String password)
+    public User setPassword(String password)
     {
         this.password = password;
+        return this;
     }
 
     public boolean getIsAdmin() {
@@ -37,7 +51,14 @@ public class User extends BaseModel {
         return getIsAdmin();
     }
 
-    public String toString(){
-        return "Email: " + getEmail();
+    public String toString() {
+        return "Id: " + getId() +  "; Email: " + getEmail();
+    }
+    
+    public void hydrateFromMap(Map map) {
+        //some kind of builder but without UserBuilder class. js (jquery) way. will it fit here?...
+        this.setId((Integer) map.get("id"))
+            .setEmail((String) map.get("email"))
+            .setPassword((String) map.get("password"));
     }
 }

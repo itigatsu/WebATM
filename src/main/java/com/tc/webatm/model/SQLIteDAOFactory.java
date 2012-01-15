@@ -2,6 +2,7 @@ package com.tc.webatm.model;
 
 import com.tc.webatm.model.user.SQLIteUserDAO;
 import com.tc.webatm.model.user.UserDAO;
+import com.tc.webatm.util.DbService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -38,7 +39,7 @@ public class SQLIteDAOFactory extends DAOFactory {
         queries.add("drop table if exists `transaction`;");
         //queries.add("create table `transaction` (id integer not null primary key autoincrement, account int not null, title text not null);");
 
-        runUpdateQueries(queries);
+        DbService.SELF.bulkUpdate(queries);
     }
 
     public void initDbWithMockData() throws ClassNotFoundException, SQLException {
@@ -53,6 +54,6 @@ public class SQLIteDAOFactory extends DAOFactory {
 
         queries.add("insert into account (user_id, currency_id, title) values(" + userId + ", " + currencyId + ", 'usd account');");
 
-        runUpdateQueries(queries);
+        DbService.SELF.bulkUpdate(queries);
     }
 }

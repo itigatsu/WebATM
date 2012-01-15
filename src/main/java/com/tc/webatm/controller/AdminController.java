@@ -1,8 +1,10 @@
 package com.tc.webatm.controller;
 
+import com.tc.webatm.model.DAOFactory;
 import com.tc.webatm.util.DbService;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -23,11 +25,11 @@ public class AdminController extends BaseController {
 
             try {
                 msgs.add("Reloading database schema...");
-                DbService.SELF.reloadDbSchema();
+                DAOFactory.getDAOFactory().reloadDbSchema();
                 msgs.add("OK");
 
                 msgs.add("Initialising database with mock data...");
-                DbService.SELF.initDbWithMockData();
+                DAOFactory.getDAOFactory().initDbWithMockData();
                 msgs.add("OK");
             } catch (Exception e) {
                 msgs.add("FAILED: " + e.getMessage());

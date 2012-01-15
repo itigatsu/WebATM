@@ -113,5 +113,11 @@
             <version>1.0.0.GA</version>
         </dependency>
 
+        <dependency>
+            <groupId>commons-dbutils</groupId>
+            <artifactId>commons-dbutils</artifactId>
+            <version>1.4</version>
+        </dependency>
+
     </dependencies>
 </project>

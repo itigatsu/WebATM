@@ -1,10 +1,16 @@
 package com.tc.webatm.model;
 
+import com.tc.webatm.model.user.User;
 import com.tc.webatm.model.user.UserDAO;
+import com.tc.webatm.util.DbService;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class DAOFactory {
@@ -13,6 +19,7 @@ public abstract class DAOFactory {
     public abstract Connection getConnection() throws ClassNotFoundException, SQLException;
     public abstract void reloadDbSchema() throws ClassNotFoundException, SQLException;
     public abstract void initDbWithMockData() throws ClassNotFoundException, SQLException;
+
     public abstract UserDAO getUserDAO();
 
     public static DAOFactory getDAOFactory() {
@@ -22,24 +29,5 @@ public abstract class DAOFactory {
                 return new SQLIteDAOFactory();
         }
         return null;
-    }
-
-    protected void runUpdateQueries(List queries) throws ClassNotFoundException, SQLException {
-        Connection conn = null;
-        try {
-            conn = getConnection();
-            Statement st = conn.createStatement();
-
-            for (Object query : queries) {
-                String sql = (String) query;
-                st.executeUpdate(sql);
-            }
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (Exception ignored) {}
-            }
-        }
     }
 }

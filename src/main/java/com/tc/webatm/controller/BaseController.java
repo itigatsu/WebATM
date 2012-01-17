@@ -1,15 +1,12 @@
 package com.tc.webatm.controller;
 
-import com.tc.webatm.model.DAOFactory;
-import com.tc.webatm.util.DbService;
-import com.tc.webatm.util.UsersService;
+import com.tc.webatm.util.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +36,7 @@ abstract public class BaseController extends HttpServlet {
         //Principal p = req.getUserPrincipal();
         //user.setLogin(req.getRemoteUser());
 
-        req.setAttribute("user", UsersService.getLoggedUser());
+        req.setAttribute("user", UserService.getLoggedUser());
 
         command.execute(req, resp);
     }

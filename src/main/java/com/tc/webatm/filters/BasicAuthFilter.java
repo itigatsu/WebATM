@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.validation.constraints.NotNull;
 
-import com.tc.webatm.model.user.User;
-import com.tc.webatm.util.UsersService;
+import com.tc.webatm.model.User;
+import com.tc.webatm.util.UserService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import com.google.common.base.Charsets;
@@ -41,18 +41,18 @@ public class BasicAuthFilter implements Filter  {
                     u.setEmail(credentials[0]);
                     u.setPassword(credentials[1]);
 
-                    if (UsersService.ADMIN_EMAIL.equals(credentials[0]) && UsersService.ADMIN_PASSWORD.equals(credentials[1]) ) {
-                        UsersService.setLoggedUser(u);
+                    if (UserService.ADMIN_EMAIL.equals(credentials[0]) && UserService.ADMIN_PASSWORD.equals(credentials[1]) ) {
+                        UserService.setLoggedUser(u);
                     } else {//todo: fetch users from db
                         if (credentials[0].equals("user@test.com") && credentials[1].equals("test")) {
-                            UsersService.setLoggedUser(u);
+                            UserService.setLoggedUser(u);
                         }
                     }
                 }
             }
         }
 
-        if (UsersService.isUserLogged()) {
+        if (UserService.isUserLogged()) {
             chain.doFilter( httpRequest, httpResponse );
             return;
         }

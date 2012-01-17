@@ -1,8 +1,10 @@
 package com.tc.webatm.util;
 
-import com.tc.webatm.model.user.User;
+import com.tc.webatm.model.User;
 
-abstract public class UsersService {
+import java.util.Map;
+
+abstract public class UserService {
     private static User loggedUser;
     
     public static final String ADMIN_EMAIL = "admin@webatm.com";
@@ -18,5 +20,12 @@ abstract public class UsersService {
 
     public static boolean isUserLogged() {
         return (loggedUser != null);
+    }
+
+    public static User getHydratedFromMap(Map map) {
+        //some kind of builder but without UserBuilder class. js (jquery) way. will it fit here?...
+        return new User().setId((Integer) map.get("id"))
+                        .setEmail((String) map.get("email"))
+                        .setPassword((String) map.get("password"));
     }
 }

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 import com.tc.webatm.model.User;
-import com.tc.webatm.util.UserService;
+import com.tc.webatm.service.UserService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import com.google.common.base.Charsets;

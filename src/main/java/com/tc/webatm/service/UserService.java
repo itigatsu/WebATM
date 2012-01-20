@@ -1,4 +1,4 @@
-package com.tc.webatm.util;
+package com.tc.webatm.service;
 
 import com.tc.webatm.model.User;
 

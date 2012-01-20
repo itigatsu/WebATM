@@ -17,6 +17,7 @@
                 <ul>
                     <li><a href="<%= request.getContextPath() %>/admin/dashboard">Dashboard</a></li>
                     <li><a href="<%= request.getContextPath() %>/admin/initDb">Init DB with mock data</a></li>
+                    <li><a href="<%= request.getContextPath() %>/admin/users">Show users list</a></li>
                 </ul>
             </c:if>
         </li>

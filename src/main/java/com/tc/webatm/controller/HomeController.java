@@ -1,5 +1,7 @@
 package com.tc.webatm.controller;
 
+import com.tc.webatm.Command;
+
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -14,8 +16,12 @@ public class HomeController extends BaseController {
     }
 
     private class IndexCommand implements Command {
+        public String getViewPath() {
+            return "/WEB-INF/view/home/index.jsp";
+        }
+
         public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            req.getRequestDispatcher("/WEB-INF/view/home/index.jsp").forward(req, resp);
+            //some logic goes here
         }
     }
 }

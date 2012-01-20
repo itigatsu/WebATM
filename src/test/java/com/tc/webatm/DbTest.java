@@ -6,7 +6,7 @@ import java.util.Collection;
 import com.tc.webatm.dao.DAOFactory;
 import com.tc.webatm.dao.UserDAO;
 import com.tc.webatm.model.User;
-import com.tc.webatm.util.DbService;
+import com.tc.webatm.util.DbUtil;
 import junit.framework.TestCase;
 
 public class DbTest extends TestCase {
@@ -17,25 +17,30 @@ public class DbTest extends TestCase {
         String initialEmail = "user@test.com";
         String changedMail = "user2@test.com";
 
+        //get all
         Collection users = userDAO.getAll();
         User targetUser = ((User)users.toArray()[0]);
-        assertEquals(users.size(), 1);
         assertEquals(targetUser.getEmail(), initialEmail);
 
+        //add
         userDAO.add(new User().setId(2).setEmail("aa@bb.cc").setPassword("123"));
         users = userDAO.getAll();
-        assertEquals(users.size(), 2);
+        assertNotSame(users.size(), 1);
 
+        int lastUId = 0;
         System.out.println("Users:");
         for (Object user : users) {
             System.out.println(user);
+            lastUId = ((User)user).getId();
         }
 
-        userDAO.delete(2);
+        //delete
+        userDAO.delete(lastUId);
         users = userDAO.getAll();
         assertEquals(users.size(), 1);
 
 
+        //update
         targetUser.setEmail(changedMail);
         userDAO.update(targetUser);
 
@@ -48,9 +53,7 @@ public class DbTest extends TestCase {
     }
 
     public void testInit() throws ClassNotFoundException, SQLException {
-        /*
-		DbService.SELF.reloadDbSchema();
-        DbService.SELF.initDbWithMockData();
-		*/
+		//DbUtil.SELF.reloadDbSchema();
+        //DbUtil.SELF.initDbWithMockData();
     }
 }

@@ -1,7 +1,6 @@
 package com.tc.webatm.util;
 
 import com.tc.webatm.Config;
-import com.tc.webatm.dao.DAOFactory;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 
@@ -9,18 +8,23 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum DbService {
+public enum DbUtil {
     SELF;
 
+    private String dbPath = "";
     public Connection getConnection() throws ClassNotFoundException, SQLException {//throws DatabaseNotAccessibleException {
         Connection con = null;
         switch (Config.getConnectType()) {
             case Config.CONNECT_JDBC:
                 Class.forName("org.sqlite.JDBC");
-                con = DriverManager.getConnection("jdbc:sqlite:WebATM.db");
+                con = DriverManager.getConnection("jdbc:sqlite:" + dbPath + "WebATM.db");
             break;
         }
         return con;
+    }
+
+    public void setDbPath(String path) {
+        dbPath = path;
     }
 
     public void bulkUpdate(List queries) throws SQLException, ClassNotFoundException {

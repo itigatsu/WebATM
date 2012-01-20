@@ -1,6 +1,6 @@
 package com.tc.webatm.model;
 
-import com.tc.webatm.util.UserService;
+import com.tc.webatm.service.UserService;
 
 public class User {
     private int id;

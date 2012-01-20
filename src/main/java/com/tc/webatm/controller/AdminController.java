@@ -1,7 +1,8 @@
 package com.tc.webatm.controller;
 
+import com.tc.webatm.Command;
 import com.tc.webatm.dao.DAOFactory;
-import com.tc.webatm.util.DbService;
+import com.tc.webatm.util.DbUtil;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class AdminController extends BaseController {
     public void init() {
         commands.put("initDb",  new InitDbCommand());
         commands.put("dashboard", new DashboardCommand());
+        commands.put("users", new UsersCommand());
     }
     
     protected String getDefaultCommand() {
@@ -19,31 +21,51 @@ public class AdminController extends BaseController {
     }
 
     private class InitDbCommand implements Command {
+        public String getViewPath() {
+            return "/WEB-INF/view/admin/reloadDb.jsp";
+        }
+
         public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             ArrayList<String> msgs = new ArrayList<String>();
 
             try {
                 msgs.add("Reloading database schema...");
-                DbService.SELF.reloadDbSchema();
+                DbUtil.SELF.reloadDbSchema();
                 msgs.add("OK");
 
                 msgs.add("Initialising database with mock data...");
-                DbService.SELF.initDbWithMockData();
+                DbUtil.SELF.initDbWithMockData();
                 msgs.add("OK");
             } catch (Exception e) {
                 msgs.add("FAILED: " + e.getMessage());
             }
 
             req.setAttribute("msgs", msgs);
-            req.getRequestDispatcher("/WEB-INF/view/admin/reloadDb.jsp").forward(req, resp);
+            render("/WEB-INF/view/admin/reloadDb.jsp", req, resp);
         }
     }
 
     private class DashboardCommand implements Command {
+        public String getViewPath() {
+            return "/WEB-INF/view/admin/dashboard.jsp";
+        }
+
         public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            //ServletContext context = req.getSession().getServletContext();
-            //context.getRequestDispatcher("/WEB-INF/view/admin/dashboard.jsp").forward(req, resp);
-            req.getRequestDispatcher("/WEB-INF/view/admin/dashboard.jsp").forward(req, resp);
+            //some logic goes here
+        }
+    }
+
+    private class UsersCommand implements Command {
+        public String getViewPath() {
+            return "/WEB-INF/view/admin/users.jsp";
+        }
+
+        public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            try {
+                req.setAttribute("users", DAOFactory.getUserDAO().getAll());
+            } catch (Exception e) {
+                errors.add("Failed to load users: " + e.getMessage());
+            }
         }
     }
 }

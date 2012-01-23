@@ -3,7 +3,10 @@ package com.tc.webatm.util;
 import com.tc.webatm.Config;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,29 +14,26 @@ import java.util.List;
 public enum DbUtil {
     SELF;
 
-    private String dbPath = "";
-    public Connection getConnection() throws ClassNotFoundException, SQLException {//throws DatabaseNotAccessibleException {
+    public Connection getConnection() throws ClassNotFoundException, SQLException, IOException {//throws DatabaseNotAccessibleException {
         Connection con = null;
         switch (Config.getConnectType()) {
             case Config.CONNECT_JDBC:
                 Class.forName("org.sqlite.JDBC");
-                con = DriverManager.getConnection("jdbc:sqlite:" + dbPath + "WebATM.db");
+                //con = DriverManager.getConnection("jdbc:sqlite:" + Config.getAppPath() + "WebATM.db");
+                String dbPath = (new ClassPathResource("WebATM.db")).getFile().getAbsolutePath();
+                con = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
             break;
         }
         return con;
     }
 
-    public void setDbPath(String path) {
-        dbPath = path;
-    }
-
-    public void bulkUpdate(List queries) throws SQLException, ClassNotFoundException {
+    public void bulkUpdate(List queries) throws SQLException, ClassNotFoundException, IOException {
         for (Object query : queries) {
             update((String) query);
         }
     }
 
-    public void update(String query, Object... params) throws SQLException, ClassNotFoundException {
+    public void update(String query, Object... params) throws SQLException, ClassNotFoundException, IOException {
         Connection conn = null;
         try {
             conn = getConnection();
@@ -54,7 +54,7 @@ public enum DbUtil {
         }
     }
 
-    public List select(String query, Object... params) throws SQLException, ClassNotFoundException {
+    public List select(String query, Object... params) throws SQLException, ClassNotFoundException, IOException {
         Connection conn = null;
         List result = null;
         try {
@@ -76,7 +76,7 @@ public enum DbUtil {
         return result;
     }
 
-    public void reloadDbSchema() throws ClassNotFoundException, SQLException {
+    public void reloadDbSchema() throws ClassNotFoundException, SQLException, IOException {
         ArrayList<String> queries = new ArrayList<String>();
 
         queries.add("drop table if exists user;");
@@ -98,7 +98,7 @@ public enum DbUtil {
         bulkUpdate(queries);
     }
 
-    public void initDbWithMockData() throws ClassNotFoundException, SQLException {
+    public void initDbWithMockData() throws ClassNotFoundException, SQLException, IOException {
         ArrayList<String> queries = new ArrayList<String>();
 
         int userId = 1;

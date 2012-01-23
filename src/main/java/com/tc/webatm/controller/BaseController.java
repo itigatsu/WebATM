@@ -1,6 +1,7 @@
 package com.tc.webatm.controller;
 
 import com.tc.webatm.Command;
+import com.tc.webatm.Config;
 import com.tc.webatm.service.UserService;
 import com.tc.webatm.util.DbUtil;
 
@@ -29,7 +30,8 @@ abstract public class BaseController extends HttpServlet {
         //clear errors on every request. reason: servlet is loading once into container
         errors.clear();
 
-        DbUtil.SELF.setDbPath(req.getPathTranslated());
+        //Config.setAppPath(req.getPathTranslated());
+        //Config.setAppPath("");
 
         String action = req.getParameter("action");
 

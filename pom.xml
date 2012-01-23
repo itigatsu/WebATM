@@ -101,7 +101,13 @@
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/google-base-extra.jar</systemPath>
-        </dependency>		
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+            <version>2.5.6</version>
+        </dependency>
 
 		<!--
 		<dependency>

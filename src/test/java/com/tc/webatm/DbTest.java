@@ -12,7 +12,11 @@ import junit.framework.TestCase;
 public class DbTest extends TestCase {
     //@Depends("#testInit")
     public void testUserDAO() throws ClassNotFoundException, SQLException {
-		UserDAO userDAO = DAOFactory.getUserDAO();
+
+        //Config.setAppPath(System.getProperty("user.dir"));
+        //Config.setAppPath("");
+
+        UserDAO userDAO = DAOFactory.getUserDAO();
 
         String initialEmail = "user@test.com";
         String changedMail = "user2@test.com";

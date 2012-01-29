@@ -45,4 +45,21 @@ public class User {
     public String toString() {
         return "Id: " + getId() +  "; Email: " + getEmail();
     }
+    
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !getClass().equals(o.getClass()) || o.hashCode() != hashCode()) {
+            return false;
+        }
+
+        User user = (User)o;
+        return (user.getIsAdmin() == getIsAdmin() &&
+                    user.getEmail().equals(getEmail()) &&
+                    user.getPassword().equals(getPassword()));
+    }
 }

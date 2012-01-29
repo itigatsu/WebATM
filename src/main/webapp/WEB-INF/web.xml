@@ -90,7 +90,7 @@
     <!-- Spring context params -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/webContext.xml</param-value>
+        <param-value>classpath:webContext.xml</param-value>
     </context-param>
 
     <listener>

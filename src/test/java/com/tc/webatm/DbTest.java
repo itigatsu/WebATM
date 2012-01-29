@@ -2,13 +2,11 @@ package com.tc.webatm;
 
 import java.sql.*;
 import java.util.Collection;
-import java.util.Properties;
 
-import com.tc.webatm.dao.UserDAO;
+import com.tc.webatm.dao.user.UserDAO;
 import com.tc.webatm.model.User;
 import junit.framework.TestCase;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class DbTest extends TestCase {
@@ -19,7 +17,9 @@ public class DbTest extends TestCase {
 
     //needed for spring to call this setter when injecting bean
     public void setUserDAO(UserDAO uDAO) {
-        userDAO = uDAO;
+        if (userDAO == null) {
+            userDAO = uDAO;
+        }
     }
 
     @Override

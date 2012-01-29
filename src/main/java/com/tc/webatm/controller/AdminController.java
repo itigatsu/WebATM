@@ -1,7 +1,7 @@
 package com.tc.webatm.controller;
 
 import com.tc.webatm.Command;
-import com.tc.webatm.dao.UserDAO;
+import com.tc.webatm.dao.user.UserDAO;
 import com.tc.webatm.util.DbUtil;
 
 import java.io.*;
@@ -10,16 +10,18 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 public class AdminController extends BaseController {
-    private UserDAO userDAO;
+    //todo: clarify this with Igor why non-static beans not loaded
+    private static UserDAO userDAO;
 
-    public void setUserDAO(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public void setUserDAO(UserDAO uDAO) {
+        if (userDAO == null) { // =\
+            userDAO = uDAO;
+        }
+        userDAO = uDAO;
     }
 
     public UserDAO getUserDAO() {
-        if (userDAO == null) {//wasn't loaded from IoC container =(
-            userDAO = (UserDAO)getBeanFromWebAppContext("userDao");
-        }
+        //userDAO = (UserDAO)getBeanFromWebAppContext("userDAOStandalone");
         return userDAO;
     }
 

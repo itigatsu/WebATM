@@ -1,7 +1,8 @@
 package com.tc.webatm.dao;
 
 import com.tc.webatm.Config;
-import com.tc.webatm.dao.jdbc.JDBCUserDAO;
+import com.tc.webatm.dao.user.jdbc.JDBCUserDAO;
+import com.tc.webatm.dao.user.UserDAO;
 
 @Deprecated
 public abstract class DAOFactory {

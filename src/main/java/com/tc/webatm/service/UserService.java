@@ -1,7 +1,6 @@
 package com.tc.webatm.service;
 
 import com.tc.webatm.model.User;
-
 import java.util.Map;
 
 abstract public class UserService {

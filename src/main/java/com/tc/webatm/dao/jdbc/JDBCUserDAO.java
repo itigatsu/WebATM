@@ -6,6 +6,7 @@ import com.tc.webatm.service.UserService;
 import com.tc.webatm.util.DbUtil;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 

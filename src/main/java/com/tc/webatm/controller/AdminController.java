@@ -1,7 +1,7 @@
 package com.tc.webatm.controller;
 
 import com.tc.webatm.Command;
-import com.tc.webatm.dao.DAOFactory;
+import com.tc.webatm.dao.UserDAO;
 import com.tc.webatm.util.DbUtil;
 
 import java.io.*;
@@ -10,6 +10,19 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 public class AdminController extends BaseController {
+    private UserDAO userDAO;
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    public UserDAO getUserDAO() {
+        if (userDAO == null) {//wasn't loaded from IoC container =(
+            userDAO = (UserDAO)getBeanFromWebAppContext("userDao");
+        }
+        return userDAO;
+    }
+
     public void init() {
         commands.put("initDb",  new InitDbCommand());
         commands.put("dashboard", new DashboardCommand());
@@ -62,7 +75,7 @@ public class AdminController extends BaseController {
 
         public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             try {
-                req.setAttribute("users", DAOFactory.getUserDAO().getAll());
+                req.setAttribute("users", getUserDAO().getAll());
             } catch (Exception e) {
                 errors.add("Failed to load users: " + e.getMessage());
             }

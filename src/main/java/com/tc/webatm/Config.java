@@ -32,7 +32,6 @@ abstract public class Config {
 
     public static ClassPathXmlApplicationContext getMainContext() {
         if (mainContext == null) {
-            //mainContext = new ClassPathXmlApplicationContext(Config.getAppPath() + "context.xml");
             mainContext = new ClassPathXmlApplicationContext("context.xml");
         }
         return mainContext;

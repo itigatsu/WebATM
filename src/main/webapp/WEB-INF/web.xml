@@ -87,6 +87,16 @@
         <param-value>true</param-value> 
     </context-param>
 
+    <!-- Spring context params -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/webContext.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
     <!-- UrlRewriteFilter -->
     <filter>
         <filter-name>UrlRewriteFilter</filter-name>

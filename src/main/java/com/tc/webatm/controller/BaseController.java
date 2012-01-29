@@ -1,9 +1,10 @@
 package com.tc.webatm.controller;
 
 import com.tc.webatm.Command;
-import com.tc.webatm.Config;
 import com.tc.webatm.service.UserService;
-import com.tc.webatm.util.DbUtil;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,10 +27,29 @@ abstract public class BaseController extends HttpServlet {
         errors = new ArrayList<String>();
     }
 
+    protected Object getBeanFromWebAppContext(String beanName) {
+        WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+        return springContext.getBean(beanName);
+    }
+    
+    @Deprecated
+    private void invokeContext() {
+        //invoking main context
+        new ClassPathXmlApplicationContext("webContext.xml");
+
+        //context = new ClassPathXmlApplicationContext("config.xml")
+        //ConfigurableApplicationContext ctx = (ConfigurableApplicationContext) context;
+        //ctx.registerShutdownHook();
+    }
+
     protected void processCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //clear errors on every request. reason: servlet is loading once into container
         errors.clear();
 
+        //context is invoking using web.xml context param
+        //invokeContext();
+
+        //no need in this once resources were put to the standard dirs
         //Config.setAppPath(req.getPathTranslated());
         //Config.setAppPath("");
 
@@ -41,7 +61,7 @@ abstract public class BaseController extends HttpServlet {
 
         Command command = commands.get(action);
 
-        if (command == null){
+        if (command == null) {
             throw new IllegalArgumentException( "No command found for action: " + action);
         }
 
@@ -81,6 +101,4 @@ abstract public class BaseController extends HttpServlet {
     public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processCommand(req, resp);
     }
-
-    //with no exception! =)
 }

@@ -2,21 +2,42 @@ package com.tc.webatm;
 
 import java.sql.*;
 import java.util.Collection;
+import java.util.Properties;
 
-import com.tc.webatm.dao.DAOFactory;
 import com.tc.webatm.dao.UserDAO;
 import com.tc.webatm.model.User;
-import com.tc.webatm.util.DbUtil;
 import junit.framework.TestCase;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class DbTest extends TestCase {
+
+    //loads from bean in test-context.xml
+    //member static bc of TestCase method specific calls
+    private static UserDAO userDAO;
+
+    //needed for spring to call this setter when injecting bean
+    public void setUserDAO(UserDAO uDAO) {
+        userDAO = uDAO;
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        //invoking needed context
+        ApplicationContext context = new ClassPathXmlApplicationContext("testContext.xml");
+        //ConfigurableApplicationContext ctx = (ConfigurableApplicationContext) context;
+        //ctx.registerShutdownHook();
+        super.setUp();
+    }
+
     //@Depends("#testInit")
     public void testUserDAO() throws ClassNotFoundException, SQLException {
-
         //Config.setAppPath(System.getProperty("user.dir"));
         //Config.setAppPath("");
 
-        UserDAO userDAO = DAOFactory.getUserDAO();
+        //already loaded
+        //userDAO = DAOFactory.getUserDAO();
 
         String initialEmail = "user@test.com";
         String changedMail = "user2@test.com";
@@ -35,7 +56,7 @@ public class DbTest extends TestCase {
         System.out.println("Users:");
         for (Object user : users) {
             System.out.println(user);
-            lastUId = ((User)user).getId();
+            lastUId = ((User) user).getId();
         }
 
         //delete

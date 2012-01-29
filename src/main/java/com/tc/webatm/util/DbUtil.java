@@ -14,7 +14,7 @@ import java.util.List;
 public enum DbUtil {
     SELF;
 
-    public Connection getConnection() throws ClassNotFoundException, SQLException, IOException {//throws DatabaseNotAccessibleException {
+    public Connection getConnection() throws ClassNotFoundException, SQLException, IOException {
         Connection con = null;
         switch (Config.getConnectType()) {
             case Config.CONNECT_JDBC:
@@ -33,7 +33,7 @@ public enum DbUtil {
         }
     }
 
-    public void update(String query, Object... params) throws SQLException, ClassNotFoundException, IOException {
+    public void update(String query, Object... params) throws SQLException, ClassNotFoundException  {
         Connection conn = null;
         try {
             conn = getConnection();
@@ -45,6 +45,8 @@ public enum DbUtil {
             }
 
             conn.close();
+        } catch(Exception e) {
+            //ignored
         } finally {
             if (conn != null) {
                 try {
@@ -54,7 +56,7 @@ public enum DbUtil {
         }
     }
 
-    public List select(String query, Object... params) throws SQLException, ClassNotFoundException, IOException {
+    public List select(String query, Object... params) throws SQLException, ClassNotFoundException {
         Connection conn = null;
         List result = null;
         try {
@@ -66,6 +68,8 @@ public enum DbUtil {
                 result = (List)run.query(conn, query, new MapListHandler());
             }
             conn.close();
+        } catch(Exception e) {
+            //ignored
         } finally {
             if (conn != null) {
                 try {
